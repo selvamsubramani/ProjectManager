@@ -1,1 +1,102 @@
-<p>add-user works!</p>
+<div class="container mt-2">
+    <section name="user" class="card">
+
+        <div class="card-header">
+            <h4 class="card-title">Add Task</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form #f="ngForm">
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">First Name: </h6>
+                    <input type="text" name="firstname" class="form-control col-4 col-md-5 col-sm-6 rounded"
+                        placeholder="Provide First Name" required [(ngModel)]="user.FirstName" #firstname="ngModel"
+                        [class.is-invalid]="firstname.invalid && firstname.touched"
+                        [class.is-valid]="firstname.valid && firstname.touched">
+                    <small [class.d-none]="firstname.valid || firstname.untouched" class="text-danger ml-2 mt-2">
+                        First name is required
+                    </small>
+                </div>
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">Last Name: </h6>
+                    <input type="text" name="lastname" class="form-control col-4 col-md-5 col-sm-6 rounded"
+                        placeholder="Provide Last Name" required [(ngModel)]="user.LastName" #lastname="ngModel"
+                        [class.is-invalid]="lastname.invalid && lastname.touched"
+                        [class.is-valid]="lastname.valid && lastname.touched">
+                    <small [class.d-none]="lastname.valid || lastname.untouched" class="text-danger ml-2 mt-2">
+                        Last name is required
+                    </small>
+                </div>
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">Employee ID: </h6>
+                    <input type="number" name="employeeId" class="form-control col-4 col-md-5 col-sm-6 rounded"
+                        placeholder="Provide Employee ID" required [(ngModel)]="user.EmployeeId" #employeeId="ngModel"
+                        [class.is-invalid]="employeeId.invalid && lastname.touched"
+                        [class.is-valid]="employeeId.valid && employeeId.touched">
+                    <small [class.d-none]="employeeId.valid || lastname.employeeId" class="text-danger ml-2 mt-2">
+                        Employee ID is required
+                    </small>
+                </div>
+
+                <div class="input-group">
+                    <span class="col-1 col-md-2 col-sm-3"></span>
+                    <input type="button" name="userbutton" class="btn btn-success col-1"
+                        value="{{  user.Id > 0 ? 'Update' : 'Add' }}"
+                        [disabled]="firstname.invalid || lastname.invalid || employeeId.invalid">
+                    <input type="reset" class="ml-2 btn btn-primary col-1">
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+    <section name="viewusers" class="card mt-1">
+
+        <section name="searchsortuser" class="card">
+            <div class="input-group mt-2 mb-2 ml-2">
+                <input type="text" class="form-control col-4" placeholder="Search User ...">
+                <span class="ml-2 mr-2 pt-2">Sort:</span>
+                <input type="button" class="ml-1 btn btn-secondary" value="First Name">
+                <input type="button" class="ml-1 btn btn-secondary" value="Last Name">
+                <input type="button" class="ml-1 btn btn-secondary" value="Employee Id">
+            </div>
+        </section>
+
+        <div class="table mt-1">
+            <div class="card w-75" *ngFor="let u of users">
+                <div class="row p-1 ">
+
+                    <div class="input-group col-8 mt-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-primary" id="firstname">First Name:</span>
+                        </div>
+                        <input type="text" class="form-control" [disabled]="true" value="{{ u.FirstName }}">
+                    </div>
+
+                    <input type="button" class="ml-1 mt-1 col-2 btn btn-success" value="Edit">
+
+                    <div class="input-group col-8 mt-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-primary" id="lastname">Last Name:</span>
+                        </div>
+                        <input type="text" class="form-control" [disabled]="true" value="{{ u.LastName }}">
+                    </div>
+
+                    <input type="button" class="ml-1 mt-1 col-2 btn btn-danger col-1" value="Delete">
+
+                    <div class="input-group col-8 mt-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-primary" id="employeeId">Employee ID:</span>
+                        </div>
+                        <input type="text" class="form-control" [disabled]="true" value="{{ u.EmployeeId }}">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
