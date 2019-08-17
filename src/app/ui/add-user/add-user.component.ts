@@ -11,6 +11,7 @@ export class AddUserComponent implements OnInit {
 
   user: User;
   users: User[];
+
   constructor() { }
 
   ngOnInit() {

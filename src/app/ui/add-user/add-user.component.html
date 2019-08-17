@@ -2,7 +2,7 @@
     <section name="user" class="card">
 
         <div class="card-header">
-            <h4 class="card-title">Add Task</h4>
+            <h4 class="card-title">{{  user.Id > 0 ? 'Edit User' : 'Add User' }}</h4>
         </div>
 
         <div class="card-body">
@@ -44,10 +44,10 @@
 
                 <div class="input-group">
                     <span class="col-1 col-md-2 col-sm-3"></span>
-                    <input type="button" name="userbutton" class="btn btn-success col-1"
+                    <input type="button" name="userbutton" class="btn btn-success col-1 col-md-2 col-sm-3"
                         value="{{  user.Id > 0 ? 'Update' : 'Add' }}"
                         [disabled]="firstname.invalid || lastname.invalid || employeeId.invalid">
-                    <input type="reset" class="ml-2 btn btn-primary col-1">
+                    <input type="reset" class="ml-2 btn btn-primary col-1 col-md-2 col-sm-3">
                 </div>
 
             </form>
@@ -59,7 +59,7 @@
         <section name="searchsortuser" class="card">
             <div class="input-group mt-2 mb-2 ml-2">
                 <input type="text" class="form-control col-4" placeholder="Search User ...">
-                <span class="ml-2 mr-2 pt-2">Sort:</span>
+                <span class="ml-2 mr-2 pt-2">Sort by:</span>
                 <input type="button" class="ml-1 btn btn-secondary" value="First Name">
                 <input type="button" class="ml-1 btn btn-secondary" value="Last Name">
                 <input type="button" class="ml-1 btn btn-secondary" value="Employee Id">
