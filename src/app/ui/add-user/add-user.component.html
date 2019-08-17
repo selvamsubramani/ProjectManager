@@ -35,9 +35,9 @@
                     <h6 class="col-1 col-md-2 col-sm-3 mt-2">Employee ID: </h6>
                     <input type="number" name="employeeId" class="form-control col-4 col-md-5 col-sm-6 rounded"
                         placeholder="Provide Employee ID" required [(ngModel)]="user.EmployeeId" #employeeId="ngModel"
-                        [class.is-invalid]="employeeId.invalid && lastname.touched"
+                        [class.is-invalid]="employeeId.invalid && employeeId.touched"
                         [class.is-valid]="employeeId.valid && employeeId.touched">
-                    <small [class.d-none]="employeeId.valid || lastname.employeeId" class="text-danger ml-2 mt-2">
+                    <small [class.d-none]="employeeId.valid || employeeId.untouched" class="text-danger ml-2 mt-2">
                         Employee ID is required
                     </small>
                 </div>
