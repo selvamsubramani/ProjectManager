@@ -26,10 +26,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('Project Manager');
   });
 
-  it('should render title in a h1 tag', () => {
+  it('should render title in a h2 tag', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to ProjectManagement!');
+    expect(compiled.querySelector('h2').textContent).toContain('Project Manager');
   });
 });
