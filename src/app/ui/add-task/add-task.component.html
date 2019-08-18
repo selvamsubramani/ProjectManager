@@ -174,14 +174,14 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <jqxListBox [filterable]="true" (onSelect)="selectParentTask($event)" [source]="users"
-                                    [displayMember]="'Name'" [valueMember]="'Id'" [height]="200" [width]="250">
+                                <jqxListBox [filterable]="true" (onSelect)="selectUser($event)" [source]="users"
+                                    [displayMember]="'FirstName'" [valueMember]="'Id'" [height]="200" [width]="250">
                                 </jqxListBox>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-primary" data-dismiss="modal"
-                                    (click)="setParentTask()">Select</button>
+                                    (click)="setUser()">Select</button>
                             </div>
                         </div>
                     </div>

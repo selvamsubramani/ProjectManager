@@ -9,7 +9,7 @@
 
                 <div class="mb-2 input-group">
                     <h6 class="col-1 col-md-2 col-sm-3 mt-2">Project: </h6>
-                    <input type="text" name="project" class="form-control col-3 col-md-4 col-sm-5 rounded"
+                    <input type="text" name="project" class="form-control col-4 col-md-5 col-sm-6 rounded"
                         placeholder="Select Project" [(ngModel)]="task.Project.Name" #project="ngModel" disabled>
                 </div>
 
@@ -127,14 +127,14 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <jqxListBox [filterable]="true" (onSelect)="selectParentTask($event)" [source]="users"
-                                    [displayMember]="'Name'" [valueMember]="'Id'" [height]="200" [width]="250">
+                                <jqxListBox [filterable]="true" (onSelect)="selectUser($event)" [source]="users"
+                                    [displayMember]="'FirstName'" [valueMember]="'Id'" [height]="200" [width]="250">
                                 </jqxListBox>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-primary" data-dismiss="modal"
-                                    (click)="setParentTask()">Select</button>
+                                    (click)="setUser()">Select</button>
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
 
                 <div class="input-group">
                     <span class="col-1 col-md-2 col-sm-3"></span>
-                    <input type="button" value="Add Task" class="btn btn-success" (click)="updateTask()"
+                    <input type="button" value="Update Task" class="btn btn-success" (click)="updateTask()"
                         [disabled]="taskname.invalid || startdate.invalid || enddate.invalid">
                     <input type="reset" class="ml-2 btn btn-primary">
                 </div>
