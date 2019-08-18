@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
-import { Router } from '@angular/router'
 import { environment } from './../../environments/environment'
 import { User } from '../model/user';
 import { Project } from '../model/project';
+import { Task } from '../model/task';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,14 @@ export class DataService {
   ProjectAPI: string = environment.serviceUrl + "project/";
   TaskAPI: string = environment.serviceUrl + "task/";
 
+  taskId = new BehaviorSubject(0);
+  currentTaskId = this.taskId.asObservable();
+
   constructor(private http: HttpClient) { }
+
+  changeTask(id: number) {
+    this.taskId.next(id);
+  }
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.UserAPI + "GetAllUsers");
@@ -59,5 +66,41 @@ export class DataService {
 
   deleteProject(id: number) {
     return this.http.delete(this.ProjectAPI + "DeleteProject/" + id);
+  }
+
+  getTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(this.TaskAPI + "GetAllTasks");
+  }
+
+  getParentTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(this.TaskAPI + "GetAllParentTasks");
+  }
+
+  getTasksByProjectId(id: number): Observable<Task[]> {
+    return this.http.get<Task[]>(this.TaskAPI + "GetAllTasksByProjectId/" + id);
+  }
+
+  getParentasksByProjectId(id: number): Observable<Task[]> {
+    return this.http.get<Task[]>(this.TaskAPI + "GetAllParentTasksByProjectId/" + id);
+  }
+
+  getTaskById(id: number): Observable<Task> {
+    return this.http.get<Task>(this.TaskAPI + "GetTaskByTaskId/" + id);
+  }
+
+  addTask(task: Task) {
+    return this.http.post(this.TaskAPI + "CreateTask", task);
+  }
+
+  updateTask(task: Task) {
+    return this.http.put(this.TaskAPI + "UpdateTask", task);
+  }
+
+  completeTask(id: number) {
+    return this.http.put(this.TaskAPI + "CompleteTask/" + id, null);
+  }
+
+  deleteTask(id: number) {
+    return this.http.delete(this.TaskAPI + "DeleteTask/" + id);
   }
 }

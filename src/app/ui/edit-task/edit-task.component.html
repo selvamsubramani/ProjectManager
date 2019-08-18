@@ -1,1 +1,152 @@
-<p>edit-task works!</p>
+<div class="container mt-2">
+    <section name="edittask" class="card">
+        <div class="card-header">
+            <h4 class="card-title">Edit Task</h4>
+        </div>
+
+        <div class="card-body">
+            <form #f="ngForm">
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">Project: </h6>
+                    <input type="text" name="project" class="form-control col-3 col-md-4 col-sm-5 rounded"
+                        placeholder="Select Project" [(ngModel)]="task.Project.Name" #project="ngModel" disabled>
+                </div>
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">Task: </h6>
+                    <input type="text" name="taskname" class="form-control col-4 col-md-5 col-sm-6 rounded"
+                        placeholder="Provide Task Name" required [(ngModel)]="task.Name" #taskname="ngModel"
+                        [class.is-invalid]="taskname.invalid && taskname.touched"
+                        [class.is-valid]="taskname.valid && taskname.touched">
+                    <small [class.d-none]="taskname.valid || taskname.untouched" class="text-danger ml-2 mt-2">
+                        Task is required
+                    </small>
+                </div>
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3">Priority: </h6>
+                    <input type="range" name="priority" class="form-control custom-range col-4 col-md-5 col-sm-6"
+                        [(ngModel)]="task.Priority" min="0" max="30" value="0" step="1" [disabled]="task.IsParent">
+                </div>
+
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">Parent Task: </h6>
+                    <input type="text" name="parenttask" class="form-control col-3 col-md-4 col-sm-5 rounded"
+                        placeholder="Select Parent Task" [(ngModel)]="task.Parent.Name" #parenttask="ngModel" readonly
+                        [class.is-invalid]="parenttask.invalid && parenttask.touched"
+                        [class.is-valid]="parenttask.valid && parenttask.touched" [disabled]="task.IsParent">
+                    <input type="button" value="Search" class="btn btn-info col-md-1" data-toggle="modal"
+                        data-target="#parenttaskModal" [disabled]="task.IsParent">
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="parenttaskModal" #userModal tabindex="-1" role="dialog"
+                    aria-labelledby="parenttaskModalModalTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="parenttaskModalModalTitle">Select Project</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <jqxListBox [filterable]="true" (onSelect)="selectParentTask($event)"
+                                    [source]="parentTasks" [displayMember]="'Name'" [valueMember]="'Id'" [height]="200"
+                                    [width]="250">
+                                </jqxListBox>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    (click)="setParentTask()">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">Start Date: </h6>
+                    <input type="date" class="form-control col-4 col-md-5 col-sm-6 rounded"
+                        placeholder="Provide Start Date" name="startdate"
+                        [ngModel]="task.StartDate | date: 'yyyy-MM-dd'" (ngModelChange)="task.StartDate = $event"
+                        #startdate="ngModel" [class.is-invalid]="startdate.invalid && startdate.touched"
+                        [class.is-valid]="startdate.valid && startdate.touched" [disabled]="task.IsParent">
+                    <div class="text-danger ml-2 mt-2" *ngIf="startdate.invalid && startdate.touched">
+                        <small *ngIf="startdate.errors['required']">
+                            Start Date is required
+                        </small>
+                        <small *ngIf="startdate.errors['invalid-start']">
+                            Start Date should be greater than or equal to Today
+                        </small>
+                    </div>
+                </div>
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">End Date: </h6>
+                    <input type="date" class="form-control col-4 col-md-5 col-sm-6 rounded"
+                        placeholder="Provide End Date" name="enddate" [ngModel]="task.EndDate | date: 'yyyy-MM-dd'"
+                        (ngModelChange)="task.EndDate = $event" #enddate="ngModel" [disabled]="task.IsParent"
+                        [class.is-invalid]="enddate.invalid && enddate.touched"
+                        [class.is-valid]="enddate.valid && enddate.touched" appDateValidator="startdate">
+                    <div class="text-danger ml-2 mt-2" *ngIf="enddate.invalid && enddate.touched">
+                        <small *ngIf="enddate.errors['required']">
+                            End Date is required
+                        </small>
+                        <small *ngIf="enddate.errors['invalid-start']">
+                            End Date should be greater than or equal to Today/Start Date
+                        </small>
+                        <small *ngIf="enddate.errors['invalid-date']">
+                            End Date should be greater than or equal to Start Date
+                        </small>
+                    </div>
+                </div>
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">User: </h6>
+                    <input type="text" name="taskowner" class="form-control col-3 col-md-4 col-sm-5 rounded"
+                        placeholder="Select Task Owner" [(ngModel)]="task.Owner.FirstName" #taskowner="ngModel" readonly
+                        [class.is-invalid]="taskowner.invalid && taskowner.touched"
+                        [class.is-valid]="taskowner.valid && taskowner.touched" [disabled]="task.IsParent">
+                    <input type="button" value="Search" class="btn btn-info col-md-1" data-toggle="modal"
+                        data-target="#taskownerModal" [disabled]="task.IsParent">
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="taskownerModal" #userModal tabindex="-1" role="dialog"
+                    aria-labelledby="taskownerModalModalTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="taskownerModalModalTitle">Select Project</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <jqxListBox [filterable]="true" (onSelect)="selectParentTask($event)" [source]="users"
+                                    [displayMember]="'Name'" [valueMember]="'Id'" [height]="200" [width]="250">
+                                </jqxListBox>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    (click)="setParentTask()">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <span class="col-1 col-md-2 col-sm-3"></span>
+                    <input type="button" value="Add Task" class="btn btn-success" (click)="updateTask()"
+                        [disabled]="taskname.invalid || startdate.invalid || enddate.invalid">
+                    <input type="reset" class="ml-2 btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
