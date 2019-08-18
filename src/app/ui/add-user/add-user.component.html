@@ -46,6 +46,7 @@
                     <span class="col-1 col-md-2 col-sm-3"></span>
                     <input type="button" name="userbutton" class="btn btn-success col-1 col-md-2 col-sm-3"
                         value="{{  user.Id > 0 ? 'Update' : 'Add' }}"
+                        (click)=" user.Id > 0 ? updateUser() : createUser(); f.reset()"
                         [disabled]="firstname.invalid || lastname.invalid || employeeId.invalid">
                     <input type="reset" class="ml-2 btn btn-primary col-1 col-md-2 col-sm-3">
                 </div>
@@ -77,7 +78,7 @@
                         <input type="text" class="form-control" [disabled]="true" value="{{ u.FirstName }}">
                     </div>
 
-                    <input type="button" class="ml-1 mt-1 col-2 btn btn-success" value="Edit">
+                    <input type="button" class="ml-1 mt-1 col-2 btn btn-success" value="Edit" (click)="editUser(u.Id)">
 
                     <div class="input-group col-8 mt-1">
                         <div class="input-group-prepend">
@@ -86,7 +87,7 @@
                         <input type="text" class="form-control" [disabled]="true" value="{{ u.LastName }}">
                     </div>
 
-                    <input type="button" class="ml-1 mt-1 col-2 btn btn-danger col-1" value="Delete">
+                    <input type="button" class="ml-1 mt-1 col-2 btn btn-danger col-1" value="Delete" (click)="deleteUser(u.Id)">
 
                     <div class="input-group col-8 mt-1">
                         <div class="input-group-prepend">
