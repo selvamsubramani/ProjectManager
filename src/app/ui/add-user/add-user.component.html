@@ -61,9 +61,9 @@
             <div class="input-group mt-2 mb-2 ml-2">
                 <input type="text" class="form-control col-4" placeholder="Search User ...">
                 <span class="ml-2 mr-2 pt-2">Sort by:</span>
-                <input type="button" class="ml-1 btn btn-secondary" value="First Name">
-                <input type="button" class="ml-1 btn btn-secondary" value="Last Name">
-                <input type="button" class="ml-1 btn btn-secondary" value="Employee Id">
+                <input type="button" class="ml-1 btn btn-secondary" value="First Name" (click)="sortByFirstName()">
+                <input type="button" class="ml-1 btn btn-secondary" value="Last Name" (click)="sortByLastName()">
+                <input type="button" class="ml-1 btn btn-secondary" value="Employee Id" (click)="sortByEmployeeId()">
             </div>
         </section>
 
@@ -87,7 +87,8 @@
                         <input type="text" class="form-control" [disabled]="true" value="{{ u.LastName }}">
                     </div>
 
-                    <input type="button" class="ml-1 mt-1 col-2 btn btn-danger col-1" value="Delete" (click)="deleteUser(u.Id)">
+                    <input type="button" class="ml-1 mt-1 col-2 btn btn-danger col-1" value="Delete"
+                        (click)="deleteUser(u.Id)">
 
                     <div class="input-group col-8 mt-1">
                         <div class="input-group-prepend">

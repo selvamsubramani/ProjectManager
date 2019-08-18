@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router'
 import { environment } from './../../environments/environment'
 import { User } from '../model/user';
+import { Project } from '../model/project';
 
 @Injectable({
   providedIn: 'root'
@@ -36,4 +37,27 @@ export class DataService {
     return this.http.delete(this.UserAPI + "DeleteUser/" + id);
   }
 
+  getProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(this.ProjectAPI + "GetAllProjects");
+  }
+
+  getProjectById(id: number): Observable<Project> {
+    return this.http.get<Project>(this.ProjectAPI + "GetProjectById/" + id);
+  }
+
+  addProject(project: Project) {
+    return this.http.post(this.ProjectAPI + "CreateProject", project);
+  }
+
+  updateProject(project: Project) {
+    return this.http.put(this.ProjectAPI + "UpdateProject", project);
+  }
+
+  suspendProject(id: number) {
+    return this.http.put(this.ProjectAPI + "SuspendProject/" + id, null);
+  }
+
+  deleteProject(id: number) {
+    return this.http.delete(this.ProjectAPI + "DeleteProject/" + id);
+  }
 }

@@ -6,6 +6,9 @@ export class Project {
     StartDate: Date;
     EndDate: Date;
     Priority: number;
+    NoOfTasks: number;
     Manager: User;
     IsSuspended: boolean;
+    IsDateEnabled: boolean;
+    Status: string;
 }

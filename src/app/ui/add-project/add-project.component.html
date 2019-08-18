@@ -20,12 +20,109 @@
                     </small>
                 </div>
 
+                <div class="input-group">
+                    <span class="col-1 col-md-2 col-sm-3"></span>
+                    <div class="form-check">
+                        <label>
+                            <input type="checkbox" name="setprojectdate" class="form-check-input"
+                                [(ngModel)]="project.IsDateEnabled" #setprojectdate="ngModel">
+                            Set Start Date and End Date</label>
+                    </div>
+                </div>
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">Start Date: </h6>
+                    <input type="date" class="form-control col-4 col-md-5 col-sm-6 rounded"
+                        placeholder="Provide Start Date" name="startdate"
+                        [ngModel]="project.StartDate | date: 'yyyy-MM-dd'" (ngModelChange)="project.StartDate = $event"
+                        [disabled]="!project.IsDateEnabled" #startdate="ngModel"
+                        [class.is-invalid]="startdate.invalid && startdate.touched"
+                        [class.is-valid]="startdate.valid && startdate.touched">
+                    <div class="text-danger ml-2 mt-2" *ngIf="startdate.invalid && startdate.touched">
+                        <small *ngIf="startdate.errors['required']">
+                            Start Date is required
+                        </small>
+                        <small *ngIf="startdate.errors['invalid-start']">
+                            Start Date should be greater than or equal to Today
+                        </small>
+                    </div>
+                </div>
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">End Date: </h6>
+                    <input type="date" class="form-control col-4 col-md-5 col-sm-6 rounded"
+                        placeholder="Provide End Date" name="enddate" [ngModel]="project.EndDate | date: 'yyyy-MM-dd'"
+                        (ngModelChange)="project.EndDate = $event" #enddate="ngModel"
+                        [disabled]="!project.IsDateEnabled" [class.is-invalid]="enddate.invalid && enddate.touched"
+                        [class.is-valid]="enddate.valid && enddate.touched">
+                    <div class="text-danger ml-2 mt-2" *ngIf="enddate.invalid && enddate.touched">
+                        <small *ngIf="enddate.errors['required']">
+                            End Date is required
+                        </small>
+                        <small *ngIf="enddate.errors['invalid-start']">
+                            End Date should be greater than or equal to Today/Start Date
+                        </small>
+                        <small *ngIf="enddate.errors['invalid-date']">
+                            End Date should be greater than or equal to Start Date
+                        </small>
+                    </div>
+                </div>
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3 mt-2">Manager: </h6>
+                    <input type="text" name="projectmanager" class="form-control col-3 col-md-4 col-sm-5 rounded"
+                        placeholder="Select Project Manager" required [(ngModel)]="project.Manager.FirstName"
+                        #projectmanager="ngModel" readonly
+                        [class.is-invalid]="projectmanager.invalid && projectmanager.touched"
+                        [class.is-valid]="projectmanager.valid && projectmanager.touched">
+                    <input type="button" value="Search" class="btn btn-info col-md-1" data-toggle="modal"
+                        data-target="#userModal">
+                    <small [class.d-none]="projectmanager.valid || projectmanager.untouched"
+                        class="text-danger ml-2 mt-2">
+                        Project name is required
+                    </small>
+                </div>
+
+                <div class="mb-2 input-group">
+                    <h6 class="col-1 col-md-2 col-sm-3">Priority: </h6>
+                    <input type="range" name="priority" class="form-control custom-range col-4 col-md-5 col-sm-6"
+                        [(ngModel)]="project.Priority" min="0" max="30" value="0" step="1">
+                </div>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="userModal" #userModal tabindex="-1" role="dialog"
+                    aria-labelledby="userModalTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="userModalTitle">Select Manager</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <jqxListBox #ManagerListBox [filterable]="true" (onSelect)="selectManager($event)"
+                                    [source]="managers" [displayMember]="'FirstName'" [valueMember]="'Id'"
+                                    [height]="200" [width]="250">
+                                </jqxListBox>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    (click)="setManager()">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
                 <div class="input-group">
                     <span class="col-1 col-md-2 col-sm-3"></span>
                     <input type="button" name="projectbutton" class="btn btn-success col-1 col-md-2 col-sm-3"
-                        value="{{ project.Id > 0 ? 'Update' : 'Add' }}" [disabled]="projectname.invalid">
+                        value="{{ project.Id > 0 ? 'Update' : 'Add' }}"
+                        (click)=" project.Id > 0 ? updateProject() : createProject(); f.reset()"
+                        [disabled]="projectname.invalid || projectmanager.invalid">
                     <input type="reset" class="ml-2 btn btn-primary col-1 col-md-2 col-sm-3">
                 </div>
 
@@ -39,10 +136,10 @@
             <div class="input-group mt-2 mb-2 ml-2">
                 <input type="text" class="form-control col-4" placeholder="Search Project ...">
                 <span class="ml-2 mr-2 pt-2">Sort by:</span>
-                <input type="button" class="ml-1 btn btn-secondary" value="Start Date">
-                <input type="button" class="ml-1 btn btn-secondary" value="End Date">
-                <input type="button" class="ml-1 btn btn-secondary" value="Priority">
-                <input type="button" class="ml-1 btn btn-secondary" value="Completed">
+                <input type="button" class="ml-1 btn btn-secondary" value="Start Date" (click)="sortByStartDate()">
+                <input type="button" class="ml-1 btn btn-secondary" value="End Date" (click)="sortByEndDate()">
+                <input type="button" class="ml-1 btn btn-secondary" value="Priority" (click)="sortByPriority()">
+                <input type="button" class="ml-1 btn btn-secondary" value="Completed" (click)="sortByStatus()">
             </div>
         </section>
 
@@ -67,7 +164,8 @@
                                             <span class="input-group-text text-primary" id="totaltasks">No of
                                                 Tasks:</span>
                                         </div>
-                                        <input type="text" class="form-control" [disabled]="true" value="{{ p.Name }}">
+                                        <input type="text" class="form-control" [disabled]="true"
+                                            value="{{ p.NoOfTasks }}">
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -75,7 +173,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text text-primary" id="completed">Completed:</span>
                                         </div>
-                                        <input type="text" class="form-control" [disabled]="true" value="{{ p.Name }}">
+                                        <input type="text" class="form-control" [disabled]="true"
+                                            value="{{ p.Status }}">
                                     </div>
                                 </div>
                             </div>
@@ -111,10 +210,12 @@
 
                     <div class="col-md-2">
                         <div>
-                            <input type="button" class="ml-1 mt-1 btn btn-success col-md-12" value="Edit">
+                            <input type="button" class="ml-1 mt-1 btn btn-success col-md-12" value="Update"
+                                [disabled]="p.IsSuspended" (click)="editProject(p.Id)">
                         </div>
                         <div>
-                            <input type="button" class="ml-1 mt-1 btn btn-danger col-md-12" value="Delete">
+                            <input type="button" class="ml-1 mt-1 btn btn-danger col-md-12" value="Suspend"
+                                [disabled]="p.IsSuspended" (click)="suspendProject(p.Id)">
                         </div>
                     </div>
 

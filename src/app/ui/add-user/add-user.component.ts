@@ -62,4 +62,16 @@ export class AddUserComponent implements OnInit {
     )
   }
 
+  sortByFirstName() {
+    this.users.sort((s, t) => s.FirstName.localeCompare(t.FirstName));
+  }
+
+  sortByLastName() {
+    this.users.sort((s, t) => s.LastName.localeCompare(t.LastName));
+  }
+
+  sortByEmployeeId() {
+    this.users.sort((s, t) => s.EmployeeId - t.EmployeeId);
+  }
+
 }
