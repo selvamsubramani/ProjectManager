@@ -39,7 +39,7 @@ describe('ViewTaskComponent', () => {
     }
 
     getProjectById(id: number): Observable<Project> {
-      const project = this.Projects.find(p => p.Id == 1);
+      let project = this.Projects.find(p => p.Id == id);
       return of(project);
     }
 
@@ -63,6 +63,7 @@ describe('ViewTaskComponent', () => {
       task.IsCompleted = true;
       return of("Task is completed");
     }
+
     changeTask(id: number) {
     }
   }
@@ -155,6 +156,13 @@ describe('ViewTaskComponent', () => {
     component.editTask(taskId);
     const task = component.tasks.find(t => t.Id == taskId);
     expect(task).toBeTruthy();
+  });
+
+  it('should set project', () => {
+    component.ngOnInit();
+    component.selectProject({ args: { item: { value: 1 } } });
+    component.setProject();
+    expect(component.projectId).toEqual(1);
   });
 
 });
