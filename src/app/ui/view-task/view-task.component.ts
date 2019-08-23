@@ -18,7 +18,8 @@ export class ViewTaskComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    this.project = new Project();
+    if(!this.project)
+      this.project = new Project();
     this.getProjects();
   }
 
@@ -58,7 +59,7 @@ export class ViewTaskComponent implements OnInit {
       subscribe(
         res => {
           console.log(res);
-          this.ngOnInit();
+          this.getTasks();
         },
         error => console.log(error));
   }
@@ -68,7 +69,7 @@ export class ViewTaskComponent implements OnInit {
       subscribe(
         res => {
           console.log(res);
-          this.ngOnInit();
+          this.getTasks();
         },
         error => console.log(error));
   }

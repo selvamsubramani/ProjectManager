@@ -117,18 +117,21 @@
                 <div class="mb-2 input-group">
                     <h6 class="col-1 col-md-2 col-sm-3 mt-2">Start Date: </h6>
                     <input type="date" class="form-control col-4 col-md-5 col-sm-6 rounded"
-                        placeholder="Provide Start Date" name="startdate"
+                        placeholder="Provide Start Date" name="startdate" required
                         [ngModel]="task.StartDate | date: 'yyyy-MM-dd'" (ngModelChange)="task.StartDate = $event"
                         #startdate="ngModel" [class.is-invalid]="startdate.invalid && startdate.touched"
                         [class.is-valid]="startdate.valid && startdate.touched" [disabled]="task.IsParent">
-                    <div class="text-danger ml-2 mt-2" *ngIf="startdate.invalid && startdate.touched">
+                    <small [class.d-none]="startdate.valid || startdate.untouched" class="text-danger ml-2 mt-2">
+                        Start Date is required
+                    </small>
+                    <!-- <div class="text-danger ml-2 mt-2" *ngIf="startdate.invalid && startdate.touched">
                         <small *ngIf="startdate.errors['required']">
                             Start Date is required
                         </small>
                         <small *ngIf="startdate.errors['invalid-start']">
                             Start Date should be greater than or equal to Today
                         </small>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="mb-2 input-group">
@@ -136,9 +139,12 @@
                     <input type="date" class="form-control col-4 col-md-5 col-sm-6 rounded"
                         placeholder="Provide End Date" name="enddate" [ngModel]="task.EndDate | date: 'yyyy-MM-dd'"
                         (ngModelChange)="task.EndDate = $event" #enddate="ngModel" [disabled]="task.IsParent"
-                        [class.is-invalid]="enddate.invalid && enddate.touched"
-                        [class.is-valid]="enddate.valid && enddate.touched" appDateValidator="startdate">
-                    <div class="text-danger ml-2 mt-2" *ngIf="enddate.invalid && enddate.touched">
+                        [class.is-invalid]="enddate.invalid && enddate.touched" required
+                        [class.is-valid]="enddate.valid && enddate.touched">
+                    <small [class.d-none]="enddate.valid || enddate.untouched" class="text-danger ml-2 mt-2">
+                        End Date is required
+                    </small>
+                    <!-- <div class="text-danger ml-2 mt-2" *ngIf="enddate.invalid && enddate.touched">
                         <small *ngIf="enddate.errors['required']">
                             End Date is required
                         </small>
@@ -148,7 +154,7 @@
                         <small *ngIf="enddate.errors['invalid-date']">
                             End Date should be greater than or equal to Start Date
                         </small>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="mb-2 input-group">
@@ -189,7 +195,7 @@
 
                 <div class="input-group">
                     <span class="col-1 col-md-2 col-sm-3"></span>
-                    <input type="button" value="Add Task" class="btn btn-success" (click)="addTask()"
+                    <input type="button" value="Add Task" class="btn btn-success" (click)="addTask(); f.reset();"
                         [disabled]="(task.IsParent && (project.invalid || taskname.invalid)) || (!task.IsParent && (project.invalid || taskname.invalid || startdate.invalid || enddate.invalid))">
                     <input type="reset" class="ml-2 btn btn-primary">
                 </div>

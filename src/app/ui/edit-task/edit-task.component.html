@@ -143,8 +143,8 @@
                 <div class="input-group">
                     <span class="col-1 col-md-2 col-sm-3"></span>
                     <input type="button" value="Update Task" class="btn btn-success" (click)="updateTask()"
-                        [disabled]="taskname.invalid || startdate.invalid || enddate.invalid">
-                    <input type="reset" class="ml-2 btn btn-primary">
+                        routerLink='/viewtask' [disabled]="taskname.invalid || startdate.invalid || enddate.invalid">
+                    <input type="button" value="Cancel" class="ml-2 btn btn-primary" routerLink='/viewtask'>
                 </div>
             </form>
         </div>
