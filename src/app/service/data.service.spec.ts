@@ -112,8 +112,70 @@ describe('DataService', () => {
         expect(error.status).toEqual(400);
       });
 
-    const req = httpMock.expectOne(dataservice.UserAPI + "GetUserById/"+userId);
+    const req = httpMock.expectOne(dataservice.UserAPI + "GetUserById/" + userId);
     expect(req.request.method).toEqual('GET');
+    req.flush(data, mockResponse);
+  });
+
+  it('should add user', () => {
+    const user = new User();
+    user.Id = 0;
+    user.FirstName = "new-User";
+    dataservice.addUser(user).subscribe(data => expect(data).toBe(user));
+
+    const req = httpMock.expectOne(dataservice.UserAPI + "CreateUser");
+    expect(req.request.method).toEqual('POST');
+    req.flush(user);
+  });
+
+  it('should not add user', () => {
+    const user = users.find(u => u.Id == 1);
+    dataservice.addUser(user).subscribe(res => { }, error => expect(error).toBeTruthy());
+
+    const req = httpMock.expectOne(dataservice.UserAPI + "CreateUser");
+    expect(req.request.method).toEqual('POST');
+    req.error(new ErrorEvent("Cannot Add"));
+  });
+
+  it('should update user', () => {
+    const user = users.find(u => u.Id == 1);
+    user.FirstName = "FirstName Updated";
+    dataservice.updateUser(user).subscribe(data => expect(data).toBe(user));
+
+    const req = httpMock.expectOne(dataservice.UserAPI + "UpdateUser");
+    expect(req.request.method).toEqual('PUT');
+    req.flush(user);
+  });
+
+  it('should not update user', () => {
+    const user = users.find(u => u.Id == 1);
+    dataservice.updateUser(user).subscribe(res => { }, error => expect(error).toBeTruthy());
+
+    const req = httpMock.expectOne(dataservice.UserAPI + "UpdateUser");
+    expect(req.request.method).toEqual('PUT');
+    req.error(new ErrorEvent("Cannot Update"));
+  });
+
+  it('should delete user', () => {
+    const userId: number = 2;
+    dataservice.deleteUser(userId).subscribe(d => expect(d).toBe(userId));
+    const req = httpMock.expectOne(dataservice.UserAPI + "DeleteUser/" + userId);
+    expect(req.request.method).toEqual('DELETE');
+    req.flush(userId);
+  });
+
+  it('should not delete user', () => {
+    const userId: number = 1;
+    let response: any;
+    let error: any;
+    const data = "Cannot delete";
+    const mockResponse = { status: 400, statusText: "BadRequest" };
+
+    dataservice.deleteUser(userId).subscribe(
+      res => expect(res).toEqual(data), e => expect(error.status).toEqual(400));
+
+    const req = httpMock.expectOne(dataservice.UserAPI + "DeleteUser/" + userId);
+    expect(req.request.method).toEqual('DELETE');
     req.flush(data, mockResponse);
   });
 
@@ -187,8 +249,73 @@ describe('DataService', () => {
         expect(error.status).toEqual(400);
       });
 
-    const req = httpMock.expectOne(dataservice.ProjectAPI + "GetProjectById/"+projectId);
+    const req = httpMock.expectOne(dataservice.ProjectAPI + "GetProjectById/" + projectId);
     expect(req.request.method).toEqual('GET');
+    req.flush(data, mockResponse);
+  });
+
+  it('should add project', () => {
+    const project: Project = new Project();
+    project.Id = 0;
+    project.Name = "new-Project";
+    dataservice.addProject(project).subscribe(data => expect(data).toBe(project));
+
+    const req = httpMock.expectOne(dataservice.ProjectAPI + "CreateProject");
+    expect(req.request.method).toEqual('POST');
+    req.flush(project);
+  });
+
+  it('should not add project', () => {
+    const project = projects.find(p => p.Id == 1);
+    dataservice.addProject(project).subscribe(res => { }, error => expect(error).toBeTruthy());
+
+    const req = httpMock.expectOne(dataservice.ProjectAPI + "CreateProject");
+    expect(req.request.method).toEqual('POST');
+    req.error(new ErrorEvent("Cannot Add"));
+  });
+
+  it('should update project', () => {
+    const project = projects.find(p => p.Id == 1);
+    project.Name = "Project-Name Updated";
+    dataservice.updateProject(project).subscribe(data => expect(data).toBe(project));
+
+    const req = httpMock.expectOne(dataservice.ProjectAPI + "UpdateProject");
+    expect(req.request.method).toEqual('PUT');
+    req.flush(project);
+  });
+
+  it('should not update project', () => {
+    const project = projects.find(p => p.Id == 1);
+    dataservice.updateProject(project).subscribe(res => { }, error => expect(error).toBeTruthy());
+
+    const req = httpMock.expectOne(dataservice.ProjectAPI + "UpdateProject");
+    expect(req.request.method).toEqual('PUT');
+    req.error(new ErrorEvent("Cannot Update"));
+  });
+
+  it('should delete project', () => {
+    const projectId: number = 2;
+    dataservice.deleteProject(projectId).subscribe(d => {
+      expect(d).toBe(projectId);
+    });
+
+    const req = httpMock.expectOne(dataservice.ProjectAPI + "DeleteProject/" + projectId);
+    expect(req.request.method).toEqual('DELETE');
+    req.flush(projectId);
+  });
+
+  it('should not delete project', () => {
+    const projectId: number = 1;
+    const data = "Cannot delete";
+    const mockResponse = { status: 400, statusText: "BadRequest" };
+
+    dataservice.deleteProject(projectId).subscribe(
+      res => expect(res).toEqual(data),
+      e => expect(e.status).toEqual(400)
+    );
+
+    const req = httpMock.expectOne(dataservice.ProjectAPI + "DeleteProject/" + projectId);
+    expect(req.request.method).toEqual('DELETE');
     req.flush(data, mockResponse);
   });
 
@@ -246,7 +373,6 @@ describe('DataService', () => {
   });
 
   it('should get error in get task by id', () => {
-
     let response: any;
     let error: any;
     const taskId: number = -1;
@@ -262,8 +388,74 @@ describe('DataService', () => {
         expect(error.status).toEqual(400);
       });
 
-    const req = httpMock.expectOne(dataservice.TaskAPI + "GetTaskByTaskId/"+taskId);
+    const req = httpMock.expectOne(dataservice.TaskAPI + "GetTaskByTaskId/" + taskId);
     expect(req.request.method).toEqual('GET');
+    req.flush(data, mockResponse);
+  });
+
+  it('should add task', () => {
+    const task: Task = new Task();
+    task.Id = 0;
+    task.Name = "new-Task";
+    dataservice.addTask(task).subscribe(data => expect(data).toBe(task));
+
+    const req = httpMock.expectOne(dataservice.TaskAPI + "CreateTask");
+    expect(req.request.method).toEqual('POST');
+    req.flush(task);
+  });
+
+  it('should not add task', () => {
+    const task = tasks.find(t => t.Id == 1);
+    dataservice.addTask(task).subscribe(res => { }, error => expect(error).toBeTruthy());
+
+    const req = httpMock.expectOne(dataservice.TaskAPI + "CreateTask");
+    expect(req.request.method).toEqual('POST');
+    req.error(new ErrorEvent("Cannot Add"));
+  });
+
+  it('should update task', () => {
+    const task = tasks.find(t => t.Id == 1);
+    task.Name = "Task-Name Updated";
+    dataservice.updateTask(task).subscribe(data => expect(data).toBe(task));
+
+    const req = httpMock.expectOne(dataservice.TaskAPI + "UpdateTask");
+    expect(req.request.method).toEqual('PUT');
+    req.flush(task);
+  });
+
+  it('should not update task', () => {
+    const taskId: number = 1;
+    const task = tasks.find(t => t.Id == taskId);
+    dataservice.updateTask(task).subscribe(res => { }, error => expect(error).toBeTruthy());
+
+    const req = httpMock.expectOne(dataservice.TaskAPI + "UpdateTask");
+    expect(req.request.method).toEqual('PUT');
+    req.error(new ErrorEvent("Cannot Update"));
+  });
+
+  it('should delete task', () => {
+    const taskId: number = 2;
+    dataservice.deleteTask(taskId).subscribe(d => {
+      expect(d).toBe(taskId);
+    });
+
+    const req = httpMock.expectOne(dataservice.TaskAPI + "DeleteTask/" + taskId);
+    expect(req.request.method).toEqual('DELETE');
+    req.flush(taskId);
+  });
+
+  it('should not delete task', () => {
+    const taskId: number = 1;
+    const data = "Cannot delete";
+    const mockResponse = { status: 400, statusText: "BadRequest" };
+
+    dataservice.deleteTask(taskId).subscribe(
+      res => expect(res).toEqual(data),
+      e => expect(e.status).toEqual(400)
+    );
+
+    const req = httpMock.expectOne(dataservice.TaskAPI + "DeleteTask/" + taskId);
+    expect(req.request.method).toEqual('DELETE');
     req.flush(data, mockResponse);
   });
 
