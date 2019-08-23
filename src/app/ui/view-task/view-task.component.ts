@@ -18,6 +18,7 @@ export class ViewTaskComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
+    this.project = new Project();
     this.getProjects();
   }
 

@@ -8,10 +8,8 @@
 
         <div class="input-group mt-2 mb-2 ml-2">
 
-            <input type="text" name="project" class="form-control col-3 col-md-4 col-sm-5 rounded"
-                placeholder="Select Project" required [(ngModel)]="project.Name" #project="ngModel" readonly
-                [class.is-invalid]="project.invalid && project.touched"
-                [class.is-valid]="project.valid && project.touched">
+            <input type="text" name="projecttoviewtask" class="form-control col-3 col-md-4 col-sm-5 rounded"
+                placeholder="Select Project" [(ngModel)]="project.Name" #projecttoviewtask="ngModel" readonly>
             <input type="button" value="Search" class="btn btn-info col-md-1" data-toggle="modal"
                 data-target="#projectModal">
 
@@ -51,8 +49,7 @@
 
     <section name="view" class="mt-3">
         <div class="table" *ngIf="tasks">
-            <div class="card"
-                *ngFor="let task of tasks">
+            <div class="card" *ngFor="let task of tasks">
                 <div class="row p-1">
                     <div class="ml-2 col-2 col-md-2 col-sm-2">
                         <h6>Task</h6>
@@ -81,8 +78,8 @@
                         {{ task.EndDate | date:'dd/MM/yyyy' }}
                     </div>
                     <div class="mr-2">
-                        <input type="button" value="Edit Task" [disabled]="task.IsCompleted==true" routerLink="/edittask"
-                            class="mt-3 btn btn-primary" (click)="editTask(task.Id)">
+                        <input type="button" value="Edit Task" [disabled]="task.IsCompleted==true"
+                            routerLink="/edittask" class="mt-3 btn btn-primary" (click)="editTask(task.Id)">
                     </div>
                     <div class="mr-2">
                         <input type="button" value="End Task" [disabled]="task.IsCompleted==true"
